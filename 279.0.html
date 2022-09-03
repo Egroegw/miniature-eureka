@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- https://www.w3schools.blog/html-head -->
+    <title>George's TODO list</title>
+    <style> </style>
+    <meta name="author" content="George Wang">
+  </head>
+
+  <body>
+
+    <!-- Only 1 <h1> heading per document. Mandatory (or strong convention?) -->
+    <h1>George's TODO list!</h1>
+    
+
+    <p>To add an item, type the item in the textbox then 
+      click on the button.</p>
+
+    <button type="button" onclick="addItem()">Add item</button>
+    <!-- I learnt that the parentheses after "addItem" are necessary, without 
+    which you are not calling the function/method. Coming from Python, I 
+    should have known this... -->
+
+    <h2>Your current list of tasks is:</h2>
+
+    <ul id="tasklist"></ul>
+
+<p id="demo">This is a demonstration.</p>
+
+
+
+
+
+
+
+<script>
+
+  ItemArray = []
+  // We store all TODO items in ItemArray. ItemArray is a list of strings.
+  // We regenerate the TODO list from ItemArray after any item is marked
+  // complete or deleted. 
+
+  ArchiveArray = []
+  RubbishBinArray = []
+  // The user can admire items deleted or completed.
+
+  function addItem(array, item) {
+    array.push(String(item))
+    // In a TODO list, everything a user enters should be considered a string
+
+    generatePrettyList(array)
+  }
+
+  function generatePrettyList(array) {
+    // uses array to generate a list of items
+
+  }
+
+    // document is the current HTML document
+    // getElementById(id) gets the HTML element with the name "id"
+    // .innerHTML is a property of an HTML element
+    // Am uncertain how performance of += compares to .append(), but out-of-scope
+    document.getElementById("tasklist").innerHTML += "Hi!";
+</script>
+
+</body>
+</html>
+
