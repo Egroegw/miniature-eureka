@@ -67,14 +67,26 @@
 
       // We store all unfinished TODO items in CurrentArray. 
       // CurrentArray is a list of strings. 
-      CurrentArray = [];
+      let CurrentArray = [];
 
       // This is an archive of completed TODO items
-      ArchivedArray = [];
+      let ArchivedArray = [];
 
       // This is an archive of deleted TODO items
-      RubbishBinArray = [];
+      let RubbishBinArray = [];
 
+      // Add a TODO item to a list (TODO list, archived, or deleted)
+      function addItem(array, item) {
+        // alert() is equilvalent to window.alert()
+        if (isEmptyString(item)) {
+          alert("Please enter a task to do.");
+        } else {
+          // In a TODO list, everything a user enters should be considered a string
+          array.push(String(item));
+        }
+
+        refreshPage();
+      }
 
       function buildCurrentView() {
         document.getElementById("ListName").innerHTML = "Your current list of tasks is:";
@@ -94,7 +106,22 @@
         generateUnorderedList(RubbishBinArray);
       }
 
+      // Refreshes the page the user is on after adding an item or moving an item to another list.
+      function refreshPage() {
+        switch (VisibleList) {
+          case "current":
+            generateUnorderedList(CurrentArray); 
+            break;
+          case "archived":
+            generateUnorderedList(ArchivedArray); 
+            break;
+          case "deleted":
+            generateUnorderedList(DeletedArray); 
+            break;
+        }
+      }
       
+
       function isEmptyString(text) {
         return text.trim().length === 0
       }
@@ -110,28 +137,22 @@
           document.getElementById("tasklist").innerHTML = "This list is empty!";
         }
 
-        // add each item of the array  to "tasklist"
-        for (var item of array) {
-          document.getElementById("tasklist").innerHTML += "<li>" + item + "</li>"
-        }        
-      }
-
-
-      // Add a TODO item to a list (TODO list, archived, or deleted)
-      function addItem(array, item) {
-        // alert() is equilvalent to window.alert()
-        if (isEmptyString(item)) {
-          alert("Please enter a task to do.");
-        } else {
-          // In a TODO list, everything a user enters should be considered a string
-          array.push(String(item));
-        }
-
-        // If the user is on the current items list, then refresh the item list.
+        // add each item of the array to "tasklist"
         if (VisibleList == "current") {
-          generateUnorderedList(CurrentArray)
+          for (var item of array) {
+            document.getElementById("tasklist").innerHTML += "<li>" + item + '<button type="button" onclick="CurrentArray.splice(CurrentArray.findIndex(a => a === \'' + item + '\'), 1); alert(CurrentArray); ArchivedArray.push(String(item));">Mark as complete.</button> </li>'
+          }
+          
         }
+        // for (var item of array) {
+        //   document.getElementById("tasklist").innerHTML += "<li>" + item + "</li>"
+
+          
+        // }        
       }
+
+
+      
 
       // By default, the page should show the list of current tasks.
       let VisibleList = "current";
