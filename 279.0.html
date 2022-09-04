@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -33,6 +32,7 @@
 
     <fieldset>
       <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio -->
+      <!-- A set of three radio buttons that lets the user choose which task list they are looking at. -->
       <legend>Select the list to view: </legend>
     
       <div>
@@ -89,6 +89,8 @@
         refreshPage();
       }
 
+      // These next three functions display each of the three task lists (current, archived, and deleted)
+      // and set VisibleList to whatever list we just built.
       function buildCurrentView() {
         document.getElementById("ListName").innerHTML = "Your current list of tasks is:";
         VisibleList = "current";
@@ -107,6 +109,7 @@
         generateUnorderedList(RubbishBinArray);
       }
 
+
       // Refreshes the page the user is on after adding an item or moving an item to another list.
       function refreshPage() {
         switch (VisibleList) {
@@ -124,6 +127,7 @@
       
 
       function isEmptyString(text) {
+        // Unlike in Rust, here the final expression is not automatically returned.
         return text.trim().length === 0
       }
 
@@ -138,26 +142,24 @@
           document.getElementById("tasklist").innerHTML = "This list is empty!";
         }
 
-        // The following can certainly be abstracted away into a helper function. However, these are relatively short, and so can be written out by hand.
-        
-        for (var item of array) {
-          
+
+        // The following can certainly be abstracted away. However, these are relatively short, and so can be written out by hand.
+        for (var item of array) {          
           if (VisibleList == "current") {
-            document.getElementById("tasklist").innerHTML += ("<li>" + item + '<button type="button" onclick="CurrentArray.splice(CurrentArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); ArchivedArray.push(String(\'' + item + '\'));">Mark as complete</button>' + '<button type="button" onclick="CurrentArray.splice(CurrentArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); RubbishBinArray.push(String(\'' + item + '\'));">Delete</button> </li>')
+            // We enumerate every item in the array. To remove a item from the array, we use the .findIndex() method.
+            // To add an item to a array, we use the .push() method. Of course, we refresh the list every time we act.
+            document.getElementById("tasklist").innerHTML += ("<li>" + item + '&ensp; <button type="button" onclick="CurrentArray.splice(CurrentArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); ArchivedArray.push(String(\'' + item + '\'));">Mark complete</button>' + '<button type="button" onclick="CurrentArray.splice(CurrentArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); RubbishBinArray.push(String(\'' + item + '\'));">Delete</button> </li>')
           }
 
           if (VisibleList == "archived") {
-            document.getElementById("tasklist").innerHTML += ("<li>" + item + '<button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); CurrentArray.push(String(\'' + item + '\'));">Mark as incomplete.</button>' + '<button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); RubbishBinArray.push(String(\'' + item + '\'));">Delete</button> </li>')
+            document.getElementById("tasklist").innerHTML += ("<li>" + item + '&ensp; <button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); CurrentArray.push(String(\'' + item + '\'));">Mark as incomplete.</button>' + '<button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); RubbishBinArray.push(String(\'' + item + '\'));">Delete</button> </li>')
           }
 
           if (VisibleList == "deleted") {
-            document.getElementById("tasklist").innerHTML += ("<li>" + item + '<button type="button" onclick="RubbishBinArray.splice(RubbishBinArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); CurrentArray.push(String(\'' + item + '\'));">Restore to task list.</button>' + '<button type="button" onclick="RubbishBinArray.splice(RubbishBinArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage();">Delete permanently</li>')         
-          }  
-      
+            document.getElementById("tasklist").innerHTML += ("<li>" + item + '&ensp; <button type="button" onclick="RubbishBinArray.splice(RubbishBinArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); CurrentArray.push(String(\'' + item + '\'));">Restore to task list.</button>' + '<button type="button" onclick="RubbishBinArray.splice(RubbishBinArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage();">Delete permanently</li>')         
+          }        
         }
       }
-
-      
 
       // By default, the page should show the list of current tasks.
       let VisibleList = "current";
