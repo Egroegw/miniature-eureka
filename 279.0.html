@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -116,7 +117,7 @@
             generateUnorderedList(ArchivedArray); 
             break;
           case "deleted":
-            generateUnorderedList(DeletedArray); 
+            generateUnorderedList(RubbishBinArray); 
             break;
         }
       }
@@ -137,20 +138,24 @@
           document.getElementById("tasklist").innerHTML = "This list is empty!";
         }
 
-        // add each item of the array to "tasklist"
-        if (VisibleList == "current") {
-          for (var item of array) {
-            document.getElementById("tasklist").innerHTML += "<li>" + item + '<button type="button" onclick="CurrentArray.splice(CurrentArray.findIndex(a => a === \'' + item + '\'), 1); alert(CurrentArray); ArchivedArray.push(String(item));">Mark as complete.</button> </li>'
+        // The following can certainly be abstracted away into a helper function. However, these are relatively short, and so can be written out by hand.
+        
+        for (var item of array) {
+          
+          if (VisibleList == "current") {
+            document.getElementById("tasklist").innerHTML += ("<li>" + item + '<button type="button" onclick="CurrentArray.splice(CurrentArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); ArchivedArray.push(String(\'' + item + '\'));">Mark as complete</button>' + '<button type="button" onclick="CurrentArray.splice(CurrentArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); RubbishBinArray.push(String(\'' + item + '\'));">Delete</button> </li>')
           }
-          
+
+          if (VisibleList == "archived") {
+            document.getElementById("tasklist").innerHTML += ("<li>" + item + '<button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); CurrentArray.push(String(\'' + item + '\'));">Mark as incomplete.</button>' + '<button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); RubbishBinArray.push(String(\'' + item + '\'));">Delete</button> </li>')
+          }
+
+          if (VisibleList == "deleted") {
+            document.getElementById("tasklist").innerHTML += ("<li>" + item + '<button type="button" onclick="RubbishBinArray.splice(RubbishBinArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); CurrentArray.push(String(\'' + item + '\'));">Restore to task list.</button>' + '<button type="button" onclick="RubbishBinArray.splice(RubbishBinArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage();">Delete permanently</li>')         
+          }  
+      
         }
-        // for (var item of array) {
-        //   document.getElementById("tasklist").innerHTML += "<li>" + item + "</li>"
-
-          
-        // }        
       }
-
 
       
 
@@ -162,4 +167,3 @@
 
   </body>
 </html>
-
