@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- https://www.w3schools.blog/html-head -->
+    <!-- Informed by https://www.w3schools.blog/html-head -->
     <title>George's TODO list</title>
     <style> </style>
     <meta name="author" content="George Wang">
@@ -11,58 +11,134 @@
 
     <!-- Only 1 <h1> heading per document. Mandatory (or strong convention?) -->
     <h1>George's TODO list!</h1>
-    
 
-    <p>To add an item, type the item in the textbox then 
-      click on the button.</p>
+    <p>To add an item to your current tasks, type it in the textbox then 
+      click on "Add item".</p>
 
-    <button type="button" onclick="addItem()">Add item</button>
-    <!-- I learnt that the parentheses after "addItem" are necessary, without 
-    which you are not calling the function/method. Coming from Python, I 
-    should have known this... -->
+    <input type="text" id="todoItem">
 
-    <h2>Your current list of tasks is:</h2>
+    <!-- // document is the current HTML document
+    // getElementById(id) gets the HTML element with the name "id"
+    // .innerHTML is a property of an HTML element -->
+    <button type="button" onclick="addItem(CurrentArray, document.getElementById('todoItem').value)">Add item</button>
 
+
+    <!-- This tells the user whether they are looking at the list of current TODO tasks, completed (archived) tasks, or deleted tasks -->
+    <h2 id="ListName"></h2>
+
+    <!-- This is the list of tasks, as an unordered list. -->
     <ul id="tasklist"></ul>
 
-<p id="demo">This is a demonstration.</p>
+
+    <fieldset>
+      <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio -->
+      <legend>Select the list to view: </legend>
+    
+      <div>
+        <input type="radio" id="current" name="listtype" value="current"
+               checked>
+               <!-- checked means this button is chosen by default -->
+        <label for="current">Current tasks</label>
+      </div>
+    
+      <div>
+        <input type="radio" id="archived" name="listtype" value="archived">
+        <label for="archived">Completed tasks</label>
+      </div>
+    
+      <div>
+        <input type="radio" id="deleted" name="listtype" value="deleted">
+        <label for="deleted">Deleted tasks</label>
+      </div>
+    </fieldset>
 
 
+    <script>
+      // All Javascript needs to go between <script> tags.
+      // We set up EventListeners for the radio buttons that tell us when a radio button is clicked. 
+      // When clicked, build the expected list of tasks.
+      const currentlistener = document.getElementById("current");
+      const archivedlistener = document.getElementById("archived");
+      const deletedlistener = document.getElementById("deleted");
+
+      currentlistener.addEventListener("click", buildCurrentView, false);
+      archivedlistener.addEventListener("click", buildArchivedView, false);
+      deletedlistener.addEventListener("click", buildDeletedView, false);
+
+      // We store all unfinished TODO items in CurrentArray. 
+      // CurrentArray is a list of strings. 
+      CurrentArray = [];
+
+      // This is an archive of completed TODO items
+      ArchivedArray = [];
+
+      // This is an archive of deleted TODO items
+      RubbishBinArray = [];
 
 
+      function buildCurrentView() {
+        document.getElementById("ListName").innerHTML = "Your current list of tasks is:";
+        VisibleList = "current";
+        generateUnorderedList(CurrentArray);
+      }
+
+      function buildArchivedView() {
+        document.getElementById("ListName").innerHTML = "Tasks you have completed:";
+        VisibleList = "archived";
+        generateUnorderedList(ArchivedArray);
+      }
+
+      function buildDeletedView() {
+        document.getElementById("ListName").innerHTML = "Deleted tasks:";
+        VisibleList = "deleted";
+        generateUnorderedList(RubbishBinArray);
+      }
+
+      
+      function isEmptyString(text) {
+        return text.trim().length === 0
+      }
 
 
+      // Generates the unordered list of items from an array (TODO, archived, or deleted tasks)
+      function generateUnorderedList(array) {
+        // wipe the current list of TODO items first
+        document.getElementById("tasklist").innerHTML = "";
 
-<script>
+        // Otherwise it's not visually obvious that a list is empty
+        if (array.length == 0) {
+          document.getElementById("tasklist").innerHTML = "This list is empty!";
+        }
 
-  ItemArray = []
-  // We store all TODO items in ItemArray. ItemArray is a list of strings.
-  // We regenerate the TODO list from ItemArray after any item is marked
-  // complete or deleted. 
+        // add each item of the array  to "tasklist"
+        for (var item of array) {
+          document.getElementById("tasklist").innerHTML += "<li>" + item + "</li>"
+        }        
+      }
 
-  ArchiveArray = []
-  RubbishBinArray = []
-  // The user can admire items deleted or completed.
 
-  function addItem(array, item) {
-    array.push(String(item))
-    // In a TODO list, everything a user enters should be considered a string
+      // Add a TODO item to a list (TODO list, archived, or deleted)
+      function addItem(array, item) {
+        // alert() is equilvalent to window.alert()
+        if (isEmptyString(item)) {
+          alert("Please enter a task to do.");
+        } else {
+          // In a TODO list, everything a user enters should be considered a string
+          array.push(String(item));
+        }
 
-    generatePrettyList(array)
-  }
+        // If the user is on the current items list, then refresh the item list.
+        if (VisibleList == "current") {
+          generateUnorderedList(CurrentArray)
+        }
+      }
 
-  function generatePrettyList(array) {
-    // uses array to generate a list of items
+      // By default, the page should show the list of current tasks.
+      let VisibleList = "current";
+      buildCurrentView();
 
-  }
+    </script>
 
-    // document is the current HTML document
-    // getElementById(id) gets the HTML element with the name "id"
-    // .innerHTML is a property of an HTML element
-    // Am uncertain how performance of += compares to .append(), but out-of-scope
-    document.getElementById("tasklist").innerHTML += "Hi!";
-</script>
-
-</body>
+  </body>
 </html>
 
