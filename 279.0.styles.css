@@ -1,0 +1,25 @@
+/* This is the CSS style sheet for my TODO app. CSS defines how HTML looks. */
+
+/* Set the color of the title and h2 to Dark Green */
+h1, h2 {
+    font-family: sans-serif;
+    color: darkgreen;
+}
+  
+/* This changes the bullet point style */
+li, ul {
+    font-family: sans-serif;
+    list-style-type: circle;
+}
+
+/* This defines the style of ordinary paragraphs.*/
+p {
+    font-family: sans-serif;
+}
+
+fieldset {
+    /* This changes the background color of the fieldset (radio buttons here) */
+    font-family: sans-serif;
+    background: lightblue;
+}
+      

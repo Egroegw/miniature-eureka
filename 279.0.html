@@ -3,7 +3,7 @@
   <head>
     <!-- Informed by https://www.w3schools.blog/html-head -->
     <title>George's TODO list</title>
-    <style> </style>
+    <link rel="stylesheet" href="279.0.styles.css"> </link>
     <meta name="author" content="George Wang">
   </head>
 
@@ -139,7 +139,7 @@
 
         // Otherwise it's not visually obvious that a list is empty
         if (array.length == 0) {
-          document.getElementById("tasklist").innerHTML = "This list is empty!";
+          document.getElementById("tasklist").innerHTML = "<em>This list is empty!</em>";
         }
 
 
@@ -152,7 +152,7 @@
           }
 
           if (VisibleList == "archived") {
-            document.getElementById("tasklist").innerHTML += ("<li>" + item + '&ensp; <button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); CurrentArray.push(String(\'' + item + '\'));">Mark as incomplete.</button>' + '<button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); RubbishBinArray.push(String(\'' + item + '\'));">Delete</button> </li>')
+            document.getElementById("tasklist").innerHTML += ("<li>" + item + '&ensp; <button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); CurrentArray.push(String(\'' + item + '\'));">Mark incomplete</button>' + '<button type="button" onclick="ArchivedArray.splice(ArchivedArray.findIndex(a => a === \'' + item + '\'), 1); refreshPage(); RubbishBinArray.push(String(\'' + item + '\'));">Delete</button> </li>')
           }
 
           if (VisibleList == "deleted") {
